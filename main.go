@@ -23,14 +23,12 @@ func (l *List) Contains(item string) bool {
 	return false
 }
 
-var devicesList = List{
-	"XX:XX:XX:XX:XX:XX", "FC:58:FA:4E:46:F0",
-}
-
 func main() {
 	connected := false
 	conCount := 0
 	log.SetFlags(log.Llongfile)
+
+	devicesList := pairedDevices()
 
 	prevOpSink := ""
 	ch := make(chan struct{})
@@ -100,4 +98,25 @@ func main() {
 	}()
 
 	wg.Wait()
+}
+
+func pairedDevices() List {
+	cmd := exec.Command("bluetoothctl", "paired-devices")
+	op, _ := cmd.CombinedOutput()
+	opStr := string(op)
+	s := strings.Split(opStr, "\n")
+	list := []string{}
+	for _, d := range s {
+		if !strings.Contains(d, "Device ") {
+			continue
+		}
+		d = strings.Trim(d, "\n")
+		s := strings.Split(d, " ")
+		if len(s) < 2 {
+			continue
+		}
+		list = append(list, s[1])
+	}
+	fmt.Println(list)
+	return list
 }

@@ -1,13 +1,11 @@
 # btcon - Bluetooth Connect
 Connect to bluetooth devices automatically when it is in range - a small fix to ubuntu's autoconnection bug.
 
-The program polls the bluetooth device every 5 seconds and tries to connect to any of the listed devices.
+The program polls the bluetooth device every 5 seconds and tries to connect to paired devices.
 
 ## SetUp
-1. clone the repo
-2. edit main.go and mention ur devie MAC address in the `devicesList` slice
-3. install it: `go install`
-4. create a new service entry at `/etc/systemd/system`, say `btcon.service`
+1. install it : `go install github.com/opxyc/btcon@latest`
+2. create a new service entry at `/etc/systemd/system`, say `btcon.service`
 
     ```sh
     nano /etc/systemd/system/btcon.service
@@ -30,7 +28,7 @@ The program polls the bluetooth device every 5 seconds and tries to connect to a
     [Install]
     WantedBy=multi-user.target
     ```
-5. start the service : `systemctl start btcon`
-6. to run at startup enable it too: `systemctl enable btcon`
+3. start the service : `systemctl start btcon`
+4. to run at startup enable it too: `systemctl enable btcon`
 
 :|: any glitch? dont complain! :|:
